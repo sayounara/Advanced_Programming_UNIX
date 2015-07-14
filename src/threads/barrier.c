@@ -3,7 +3,7 @@
 #include <limits.h>
 #include <sys/time.h>
 
-#define NTHR   8				/* number of threads */
+#define NTHR   32				/* number of threads */
 #define NUMNUM 8000000L			/* number of numbers to sort */
 #define TNUM   (NUMNUM/NTHR)	/* number to sort per thread */
 
@@ -15,8 +15,9 @@ pthread_barrier_t b;
 #ifdef SOLARIS
 #define heapsort qsort
 #else
-extern int heapsort(void *, size_t, size_t,
-                    int (*)(const void *, const void *));
+/*extern int heapsort(void *, size_t, size_t,
+                   int (*)(const void *, const void *));*/
+#define heapsort qsort
 #endif
 
 /*
@@ -101,8 +102,10 @@ main()
 	pthread_barrier_init(&b, NULL, NTHR+1);
 	for (i = 0; i < NTHR; i++) {
 		err = pthread_create(&tid, NULL, thr_fn, (void *)(i * TNUM));
-		if (err != 0)
-			err_exit(err, "can't create thread");
+		if (err != 0) {
+				printf("can't create thread");
+				exit(-1);
+		}
 	}
 	pthread_barrier_wait(&b);
 	merge();
@@ -115,7 +118,7 @@ main()
 	endusec = end.tv_sec * 1000000 + end.tv_usec;
 	elapsed = (double)(endusec - startusec) / 1000000.0;
 	printf("sort took %.4f seconds\n", elapsed);
-	for (i = 0; i < NUMNUM; i++)
-		printf("%ld\n", snums[i]);
+/*	for (i = 0; i < NUMNUM; i++)
+		printf("%ld\n", snums[i]);*/
 	exit(0);
 }
