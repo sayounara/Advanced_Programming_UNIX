@@ -1,4 +1,5 @@
 #include "apue.h"
+#include <omp.h>
 #include <pthread.h>
 #include <limits.h>
 #include <sys/time.h>
