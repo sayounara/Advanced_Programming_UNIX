@@ -4,7 +4,7 @@
 #include <limits.h>
 #include <sys/time.h>
 #define NTHR   4			/* number of threads */
-#define NUMNUM 8000000L			/* number of numbers to sort */
+#define NUMNUM 80000000L			/* number of numbers to sort */
 #define TNUM   (NUMNUM/NTHR)	/* number to sort per thread */
 
 long nums[NUMNUM];
